@@ -117,5 +117,13 @@ Los paths reciben el path al que van a responder y la vista que vana  devolver.
 
 ```
 path('hello-world/',hello_world)
+```
+## El objeto request
+La manera en que django procesa una peticion es la siguiente:
 
+- Evalua el valor de la variable `ROOT_URLCONF` en el archivo `settings.py`
+- Luego busca una variable llamada `urlpatterns` dentro del `urls.py` hasta que haga match con la url solicitada
+- Cuando encuentra la url deseada, pasa la funcion con dos argumentos, una instancia de `httpResponses` y los demas argumentos de la funcion
+- Si ninguna url coincide, manda una excepcion
 
+Creamos un archivo llamado `views.py`
