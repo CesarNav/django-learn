@@ -95,3 +95,27 @@ python manage.py runserver
 
 - ROOT_URLCONF: Define el archivo principal de urls
 
+## El archivo urls
+
+Mediante los paths tu defines las URL a la que estas esperando responder algo, este es el primer argumento de la funcion `path()`, el segundo argumento es la vista que va a resolver el llamado.
+
+Una vista puede ser una función o una clase que retorna un valor.
+
+Para escribir una respuesta http importamos una clase desde django
+
+```
+from django.http import HttpResponse
+```
+Todas las vistas reciben un request y regresan una instancia de la clase HTTpResponse con el contenido deseado
+
+```
+def hello_world(request):
+    return HttpResponse("Hola mundo")
+```
+
+Los paths reciben el path al que van a responder y la vista que vana  devolver.
+
+```
+path('hello-world/',hello_world)
+
+

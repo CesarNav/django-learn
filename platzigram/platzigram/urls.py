@@ -13,9 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+# Platzigram URLS module
+#Para hacer el hello-world no necesitam el admin
+#from django.contrib import admin
 from django.urls import path
+# Para escribir una respuesta http importamos una herramienta desde django
+from django.http import HttpResponse
+
+# Devuelve un saludo
+def hello_world(request):
+    return HttpResponse("Hola mundo")
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+
+    path('hello-world/', hello_world)
+    #path('admin/', admin.site.urls),
 ]
