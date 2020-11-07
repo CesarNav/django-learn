@@ -126,4 +126,4 @@ La manera en que django procesa una peticion es la siguiente:
 - Cuando encuentra la url deseada, pasa la funcion con dos argumentos, una instancia de `httpResponses` y los demas argumentos de la funcion
 - Si ninguna url coincide, manda una excepcion
 
-Creamos un archivo llamado `views.py`
+Creamos un archivo llamado `views.py`para manejar las vistas de manera separada
