@@ -3,6 +3,8 @@
 from django.http import HttpResponse
 #Utilidades
 from datetime import datetime
+import json
+
 
 def hello_world(request):
     #Devuelve la hora del servidor (%b Meses %dth Dias, %Y años -%H:%M horas y minutos)
@@ -12,12 +14,22 @@ def hello_world(request):
         now=now
     ))
 
-def hi(request):
-    #pdb es una utilidad de python que pone un debugger en consola cada que llega al codigo
-    return HttpResponse("Hola")
+def hi(request, nombre, edad):
+    #Devuelve un saludo
+    if edad < 18:
+        message = "Lo sentimos {}, no eres bienvenido aqui".format(nombre)
+    else:
+        message = "Hola {}, Puedes ingresar".format(nombre)
+    return HttpResponse(message)
 
 def num(request):
+    #Devuelve un lista ordenada de numeros
     numbers = [int (i) for i in request.GET['numeros'].split(',')]
     num_ord = sorted(numbers)
+    data = {
+        'status' : 'ok',
+        'numbers': num_ord,
+        'messsage': 'Integers sorted successfully'
+    }
     #import pdb; pdb.set_trace()
-    return HttpResponse(str(numbers), content_type='application/json')
+    return HttpResponse(json.dumps(data), content_type='application/json')

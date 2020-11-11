@@ -6,6 +6,6 @@ from platzigram import views
 urlpatterns = [
     
     path('hello-world/', views.hello_world),
-    path('hi/', views.hi),
+    path('hi/<str:nombre>/<int:edad>/', views.hi),
     path('num/', views.num)
 ]
