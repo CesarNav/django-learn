@@ -118,7 +118,10 @@ Los paths reciben el path al que van a responder y la vista que vana  devolver.
 ```
 path('hello-world/',hello_world)
 ```
-## El objeto request
+## Vistas
+### El objeto request
+Dajngo usa los objetos `request` y `response` para pasar estados a traves del sistema.
+
 La manera en que django procesa una peticion es la siguiente:
 
 - Evalua el valor de la variable `ROOT_URLCONF` en el archivo `settings.py`
@@ -126,4 +129,30 @@ La manera en que django procesa una peticion es la siguiente:
 - Cuando encuentra la url deseada, pasa la funcion con dos argumentos, una instancia de `httpResponses` y los demas argumentos de la funcion
 - Si ninguna url coincide, manda una excepcion
 
-Creamos un archivo llamado `views.py`para manejar las vistas de manera separada
+Creamos un archivo llamado `views.py`para manejar las vistas de manera separada.
+
+### pdb
+Podemos acceder a un debgugger de python que se llama pdb, podemos invocarlo a traves del comando. Nos permite poner un debugger ene la consola cada vez que se ejecute un codigo antes de llegar a el.
+```
+import pdb; pdb.set_trace()
+```
+A traves del pdb podemos tener acceso a los objtos que testemos manejando en ese momento. por ejemplo al objeto request
+
+- `request`:Nos da el tipo del objeto
+- `request.META`: Devuelve la informacion META o header
+- `request.methods`: Los metodos del request
+- `request.GET`: Devuelve los argumentos del objeto get, con esto podemos tomar los argumentos que estan pasando por la URL y hacer operaciones.
+
+### Tomar argumentos de la URL
+
+Podemos tomar argumentos de la URL y hacer operaciones con ellos 
+```
+numbers = request.GET['numeros']
+return HttpResponse(str(numbers)
+```
+Podemos devolver los argumentos de la URL en el formato deseado, por ejemplo en formato JSON
+```
+return HttpResponse(str(numbers), content_type='application/json')
+```
+
+
