@@ -145,14 +145,47 @@ A traves del pdb podemos tener acceso a los objtos que testemos manejando en ese
 
 ### Tomar argumentos de la URL
 
-Podemos tomar argumentos de la URL y hacer operaciones con ellos 
+Podemos tomar argumentos de la URL y hacer operaciones con ellos.
+
 ```
 numbers = request.GET['numeros']
-return HttpResponse(str(numbers)
+return HttpResponse(numbers)
 ```
 Podemos devolver los argumentos de la URL en el formato deseado, por ejemplo en formato JSON
-```
-return HttpResponse(str(numbers), content_type='application/json')
-```
 
+```
+return HttpResponse((numbers), content_type='application/json')
+```
+#### Path converters
 
+Con path converters podemos tomar argumentos de la url y convertirlos a un tipo de dato especifico en el archivo urls.py para ello usamos `<tipo_dato:nombre_argumento>`, por ejemplo `<string:name>`
+
+### Creacion de Apps
+Una app es un modulo de python que provee un conjunto de funcionalidades relacionadas entre si. las apps son una combinacion de models,vistas,urls y archivos estaticos. Las apps hacen algo en particular y pueden ser reuzables.
+Un poryecto es una colecciones de configuraciones y apps para un sitio web especifico
+
+Para crear una app en django se utiliza la siguiente instruccion, el nombre de la app siempre deberia ser en plural
+```
+python manage.py startapp nombre_app
+```
+Esto crea un nuevo folder con el nombre de la app, y contiene:
+
+- migrations: Es un modulo de python que se encarga de grabar los cambios en la base de datos.
+- \_init_.py: Declara la app como un modulo de python
+- admin.py: Registra los modelos en el administador de django
+- apps.py: Declara toda la configuracion de nuestra app
+- models.py: Guarda los modelos de nuestros datos
+- test.py: Es para pruebas
+- views.py: maneja las vistas
+
+En el archivo apps.py se crea una clase para la configuracion de la app, alli podemos configurar el nombre, que se da automaticamente al crear la app y el `verbose_name` que es el nombre que se mostrara.
+```
+class RockNRollConfig(AppConfig):
+    name = 'rock_n_roll'
+    verbose_name = "Rock ’n’ roll"
+```
+Para instalar la palicacion se debe hacer en el archivo settings.py en el apartado de *intalled_apps* se debe poner con el mismo nombre con que se invocó
+
+Es buena opcion diferenciar las apps de djanog de las apps locales.
+
+Las vistas que se generan dentro del modulo se importan e invocan ingualmente desde el archivo urls.py.
