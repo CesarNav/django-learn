@@ -10,5 +10,5 @@ urlpatterns = [
     path('hi/<str:nombre>/<int:edad>/', local_views.hi),
     path('num/', local_views.num),
 
-    path('post/',post_views.list_post),
+    path('post/', post_views.list_post),
 ]

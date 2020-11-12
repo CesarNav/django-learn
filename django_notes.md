@@ -188,4 +188,20 @@ Para instalar la palicacion se debe hacer en el archivo settings.py en el aparta
 
 Es buena opcion diferenciar las apps de djanog de las apps locales.
 
-Las vistas que se generan dentro del modulo se importan e invocan ingualmente desde el archivo urls.py.
+Las vistas que se generan dentro del modulo se importan e invocan igualmente desde el archivo urls.py.
+
+## Tamplate system
+Los Templates son la manera en que dajngo genera contenido HTML dinamico. Un template contiene la parte estatica deseada de HTML y una forma de introducir contenido dinamico.
+
+Debemos crear una carpeta llamada `templates` dentro de nuestr app y dentre de dicha carpeta, el documento que llevara el HTML
+
+Para usar los templates debemos importar el modulo `render` dentro de views.py
+```
+from django.shortcut import render
+```
+`render` es una funcion que toma el `request`, el nombre del `template`y el contexto.
+
+```
+def list_post(request):
+    return render(request,'feed.html', {'posts': posts})
+```
