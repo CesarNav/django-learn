@@ -246,6 +246,8 @@ Esto buscara nuestras migraciones y las reflejara en un archivo dentro de la car
 ```
 python manage.py migrate
 ```
+Cada que se modifique la tabla se deben seguir los pasos anteriores.
+
 ### El ORM de Django
 Para crear registros en nuestra base de datos django usa las clases del ORM, de este modo se hace una instanciacion de la clase.
 - Se debe abrir una consola de Django
@@ -256,7 +258,7 @@ python manage.py shell
 ```
 from post.models import User
 ```
-- Se instancia la clase, `objects` es la interfaz que nos permite crear o traer datos
+- Se pueden hacer registros de dos formas. a traves del CREATE, una  instancia la clase, `objects` es la interfaz que nos permite crear o traer datos
 ```
 cesar = User.objects.create(
     email='hola@gmail.com', 
@@ -264,4 +266,28 @@ cesar = User.objects.create(
     first_name='Cesar', 
     last_name='Navarro'
     )
+```
+O a traves de la instanciacion individual de cada campo, para guardar esto siempre se debe ejecutar la instancia `.save()`
+```
+julio = User()
+julio.email = 'julio@email.com'
+julio.password = '1234'
+julio.first_name = 'Julio'
+julio.last_name = 'Navarro'
+
+julio.save()
+```
+- Para modificar se hace instanciando el campo y guardadno los cmabios con `.save()`
+```
+julio.last_name = 'Morales'
+
+julio.save()
+```
+- Para borrar un registro se ejecuta la instancia `.delete()`
+```
+julio.delete()
+```
+- Para obtener un registro
+```
+user = User.objects.get(email ='julio@email.com)
 ```
