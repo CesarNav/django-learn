@@ -246,4 +246,22 @@ Esto buscara nuestras migraciones y las reflejara en un archivo dentro de la car
 ```
 python manage.py migrate
 ```
-
+### El ORM de Django
+Para crear registros en nuestra base de datos django usa las clases del ORM, de este modo se hace una instanciacion de la clase.
+- Se debe abrir una consola de Django
+```
+python manage.py shell
+```
+-  Se importa el modelo
+```
+from post.models import User
+```
+- Se instancia la clase, `objects` es la interfaz que nos permite crear o traer datos
+```
+cesar = User.objects.create(
+    email='hola@gmail.com', 
+    password='1234', 
+    first_name='Cesar', 
+    last_name='Navarro'
+    )
+```
