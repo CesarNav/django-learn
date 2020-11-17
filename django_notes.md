@@ -238,6 +238,23 @@ Para crar las tablas, Django usa la tecnica ORM (Object Relational Mapper) una a
 
 Por ello para crear una tabla, la debemos crear como una clase, en la documentacion de django encontramos la informacion y las opciones de como configurar cada campo.
 
+```
+class User(models.Model):
+    #User Model
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=100)
+
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+
+    bio = models.TextField(blank=True)
+
+    birthdate = models.DateField(blank=True, null=True)
+
+    created = models.DateTimeField(auto_now_add=True)
+    cmodified = models.DateTimeField(auto_now=True)
+```
+
 Una vez construido el modelo, debemos enviar dichas migraciones a traves del comando
 ```
 python manage.py makemigrations
@@ -291,3 +308,22 @@ julio.delete()
 ```
 user = User.objects.get(email ='julio@email.com)
 ```
+### Extendiendo los modelos
+Si bien los modelos pueden ser creados de manera directa, esto trae ciertas complicaciones a la hora de autenticar los registros, Django tiene modelos por defecto, que se pueden implementar para ser usados por la aplicacion.
+
+- Para implementar los modelos que django trae por defecto debemos iniciar le shell de django e importar el modelo desde django.
+```
+from django.contrib.auth.models import User 
+```
+- Instanciamos el usuario nuevo
+```
+u = User.objects.create_user(username='Camilo', password='admin123')
+```
+### Superusuario
+Admin es un modulo de django que permite administrar los usuarios de la aplicacion, se accede a traves de un superusuario.
+
+- Para crear un super usuario
+```
+python manage.py createsuperuser
+```
+
