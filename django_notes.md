@@ -186,12 +186,14 @@ class RockNRollConfig(AppConfig):
 ```
 Para instalar la palicacion se debe hacer en el archivo settings.py en el apartado de *intalled_apps* se debe poner con el mismo nombre con que se invocó
 
-Es buena opcion diferenciar las apps de djanog de las apps locales.
+Es buena opcion diferenciar las apps de django de las apps locales.
 
 Las vistas que se generan dentro del modulo se importan e invocan igualmente desde el archivo urls.py.
 
-## Tamplate system
-Los Templates son la manera en que dajngo genera contenido HTML dinamico. Un template contiene la parte estatica deseada de HTML y una forma de introducir contenido dinamico.
+### Tamplate system
+Los Templates son la manera en que dajngo genera contenido HTML dinamico. Un template contiene la parte estatica deseada de HTML y una forma de introducir contenido dinamico a traves de  logica de programacion.
+
+Los temples definen como se muestra la informacion que es traida por las vistas
 
 Debemos crear una carpeta llamada `templates` dentro de nuestr app y dentre de dicha carpeta, el documento que llevara el HTML
 
@@ -199,9 +201,49 @@ Para usar los templates debemos importar el modulo `render` dentro de views.py
 ```
 from django.shortcut import render
 ```
-`render` es una funcion que toma el `request`, el nombre del `template`y el contexto.
+`render` es una funcion que toma el `request`, el nombre del `template`y el contexto, que puede ser por ejemplo, un diccionario.
 
 ```
 def list_post(request):
     return render(request,'feed.html', {'posts': posts})
 ```
+Luego en el archivo de HTML se agrega la estructura de presentacion en HTML y con logica de progrmacion el contenido que va a cambiar.
+ 
+### Patrones de diseño
+Anteriormente con la logica programacion de los datos estaba mezclada con la presentacion de los mismos, lo que generaba que muchas partes del codigo hicieran muchas cosas y se encontraran mezcladas, es un problema muy comun en como muestras los datos, como se traen los datos y como se actualizan.
+
+Para solucionar esto estan los patrones de diseno, que son forma probadas de solucionar problemas comunes, para el desarrollo web existe el **MVC** *Model View COntroller*, que es una manera de separar los datos, la presentacion y la logica.
+
+- Controller: Maneja la logica request y sabe que template mostrar
+- Modelo: Define la estructura de los datos, el acceso y la validacion
+- Vista: Como se muestran los datos
+
+Django implementa algo similar, el **MTV** *Model Template View* 
+
+- Modelo: Define la estructura de los datos, el acceso y la validacion
+- Template: Logica de presentacion de los datos
+- Vista: Trae los datos y los pasa al template
+
+## Modelos
+### La M de MTV
+Para aplicar las migraciones que aparecen al momento de correr el servidor de prueba, debemos ejecutar el comando.
+```
+python manage.py migrate
+```
+Esto nos permite manejar las migraciones.
+
+En el archivo settings.py es donde podremos manejar el engine de nuestras bases de datos, el modelo en Django define la estructura de los datos, el acceso y la validacion de los mismos, para esto usa diferentes opciones para conectarse a multiples bases de datos como MySQL, PostgreSQL o SQLite, esta ultima viene configurada por defecto.
+
+Para crar las tablas, Django usa la tecnica ORM (Object Relational Mapper) una abstraccion del manejo de datos usando OOP, el ORM es un conjunto de clases de python que nos permiten interactuar con nuestra base de datos y definir su estructura.
+
+Por ello para crear una tabla, la debemos crear como una clase, en la documentacion de django encontramos la informacion y las opciones de como configurar cada campo.
+
+Una vez construido el modelo, debemos enviar dichas migraciones a traves del comando
+```
+python manage.py makemigrations
+```
+Esto buscara nuestras migraciones y las reflejara en un archivo dentro de la carpeta `migrations`, luego hacemos migrate para aplicarlos.
+```
+python manage.py migrate
+```
+

@@ -36,13 +36,3 @@ posts = [
 def list_post(request):
     return render(request, 'feed.html', {'posts': posts})
 
-#usando httpresponse
-#def list_post(request):
-    #contenido = []
-    #for post in posts:
-        #contenido.append("""
-            #<p><strong>{nombre}</strong></p>
-            #<p><small>{user} - <i>{timestamp}</i></small></p>
-            #<figure><img src='{picture}'/></figure>
-        #""".format(**post))
-    #return HttpResponse('<br>'.join(contenido))
