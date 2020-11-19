@@ -326,4 +326,7 @@ Admin es un modulo de django que permite administrar los usuarios de la aplicaci
 ```
 python manage.py createsuperuser
 ```
+### MOdelo de usuarios
+Django nos permite dos acciones para implementar el modelo de usuarios, el modelo proxy, y extender la clase de usuario ya existente.
 
+### Modelo Proxy
