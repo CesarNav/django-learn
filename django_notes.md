@@ -1,10 +1,16 @@
-## Notas
+# Notas
+
+Un framework es un conjunto de herramientas en un paquete que pueden ser usadas para construir aplicaciones web.
+
 Al principio de la web todos los contenidos eran texto plano, Text-based, conforme iba creciendo, las necesidades tambien cambiaban y se hacia necesario implementar bases de datos e interfaces graficas, se hace necesario poder ejecutar scripts en el servidor a traves de requests,
 esto se hace muy dificil de mantener y escalar.
 
 Luego nacen los frameworks de desarrollo web que permiten lidiar con elementos como protocolos HTTPS, conecxiones de bases de datos e interacciones con el HTML, los templates.
 
-Django nace en el 2003 con la necesidad de generar sitios web de manera agil y escalables y seguros.
+Django nace en el 2003 con la necesidad de generar sitios web de manera agil y escalables y seguros. algunas de las caracteristicas de Django son:
+- ORM el *Object-relational mapping* el cual nos ayuda para hacer quieries en la base de datos
+- URL routing que determina la logica a seguir dependiendo de la URL de un request
+- HTML templating permite definir la logica de presentacion e insertar datos dinamicos en nuestro HTML
 
 ### Inicialización del entorno de desarrollo
 
@@ -21,6 +27,7 @@ pip install virtualenv
 ```
 
 - Crear entorno virtual con virtualenv:
+
 El entorno virtual es un folder donde se instalan todas las dependecnias para que las mismas nos se instalen en el entorno global, esto para evitar problemas de compatibilidad.
 
 ```
@@ -67,7 +74,7 @@ django-admin startproject ProyectoDjango
     - settings.py : Es el archivo mas importante pues declara toda la configuracion de nuestro proyecto
     - urls.py : Es el archivo de entrada para todas las peticiones que lleguen al proyecto.
     - wsgi.py : Es el archivo usado para implementacion y la interfaz wsgi para el servidor de produccion.
-    - manage.py: Es un archivo de interfaz para django-admin
+    - manage.py: Es un archivo de interfaz para django-admin que nos permite ejecutar varios comandos
 
 - Se pueden guardar las dependencias instaladas en un archivo .txt:
 
@@ -83,7 +90,8 @@ python manage.py runserver
 ```
 
 ## El archivo seetings
- - BASE_DIR: Declara el lugar donde esta corriendo el proyecto
+
+- BASE_DIR: Declara el lugar donde esta corriendo el proyecto
 
 - SECRET_KEY: Se usa para las contraseñas y las sesiones que se almacenan en la base de datos
 
@@ -97,7 +105,7 @@ python manage.py runserver
 
 ## El archivo urls
 
-Mediante los paths tu defines las URL a la que estas esperando responder algo, este es el primer argumento de la funcion `path()`, el segundo argumento es la vista que va a resolver el llamado.
+Mediante los paths se definen las URL a la que se está esperando responder algo, este es el primer argumento de la funcion `path()`, el segundo argumento es la vista que va a resolver el llamado.
 
 Una vista puede ser una función o una clase que retorna un valor.
 
@@ -161,101 +169,123 @@ return HttpResponse((numbers), content_type='application/json')
 Con path converters podemos tomar argumentos de la url y convertirlos a un tipo de dato especifico en el archivo urls.py para ello usamos `<tipo_dato:nombre_argumento>`, por ejemplo `<string:name>`
 
 ### Creacion de Apps
-Una app es un modulo de python que provee un conjunto de funcionalidades relacionadas entre si. las apps son una combinacion de models,vistas,urls y archivos estaticos. Las apps hacen algo en particular y pueden ser reuzables.
-Un poryecto es una colecciones de configuraciones y apps para un sitio web especifico
+Una app es un modulo de python que provee un conjunto de funcionalidades relacionadas entre si. Las apps son una combinacion de modelos,vistas,urls y archivos estaticos. Las apps tienen un proposito  particular y pueden ser reutilizables. 
 
-Para crear una app en django se utiliza la siguiente instruccion, el nombre de la app siempre deberia ser en plural
+Un proyecto es una coleccion de configuraciones y apps para un sitio web especifico
+
+- Para crear una app en django se utiliza la siguiente instruccion, el nombre de la app siempre deberia ser en plural
 ```
 python manage.py startapp nombre_app
 ```
-Esto crea un nuevo folder con el nombre de la app, y contiene:
+- Esto crea un nuevo folder con el nombre de la app, y contiene:
 
-- migrations: Es un modulo de python que se encarga de grabar los cambios en la base de datos.
-- \_init_.py: Declara la app como un modulo de python
-- admin.py: Registra los modelos en el administador de django
-- apps.py: Declara toda la configuracion de nuestra app
-- models.py: Guarda los modelos de nuestros datos
-- test.py: Es para pruebas
-- views.py: maneja las vistas
+    - apps.py: Declara toda la configuracion especifica de nuestra app.
+    - models.py: Provee la capa de datos que Django usa para construir el esquema de la base de datos y los queries.
+    - admin.py: DEfine una interfaz de administrador que nos permite ver y editar la data relacionada con la app.
+    - \_init_.py: Declara la app como un modulo de python.
+    - views.py: Define la logica y el control de flujo para manejar los request y responses HTTP.
+    - test.py: Se usa para escribir los unit tests para las funcionalidades de la app.
+    - migrations: Es un modulo de python que se encarga de grabar los cambios en la base de datos.
 
-En el archivo apps.py se crea una clase para la configuracion de la app, alli podemos configurar el nombre, que se da automaticamente al crear la app y el `verbose_name` que es el nombre que se mostrara.
+- En el archivo apps.py se crea una clase para la configuracion de la app, alli podemos configurar el nombre, que se da automaticamente al crear la app y el `verbose_name` que es el nombre que se mostrara.
 ```
 class RockNRollConfig(AppConfig):
     name = 'rock_n_roll'
     verbose_name = "Rock ’n’ roll"
 ```
-Para instalar la palicacion se debe hacer en el archivo settings.py en el apartado de *intalled_apps* se debe poner con el mismo nombre con que se invocó
+- Para instalar la palicacion se debe hacer en el archivo settings.py en el apartado de *intalled_apps* se debe poner con el mismo nombre con que se invocó.
 
 Es buena opcion diferenciar las apps de django de las apps locales.
 
-Las vistas que se generan dentro del modulo se importan e invocan igualmente desde el archivo urls.py.
+- Las vistas que se generan dentro del modulo se importan e invocan igualmente desde el archivo urls.py.
 
-### Tamplate system
-Los Templates son la manera en que dajngo genera contenido HTML dinamico. Un template contiene la parte estatica deseada de HTML y una forma de introducir contenido dinamico a traves de  logica de programacion.
-
-Los temples definen como se muestra la informacion que es traida por las vistas
-
-Debemos crear una carpeta llamada `templates` dentro de nuestr app y dentre de dicha carpeta, el documento que llevara el HTML
-
-Para usar los templates debemos importar el modulo `render` dentro de views.py
-```
-from django.shortcut import render
-```
-`render` es una funcion que toma el `request`, el nombre del `template`y el contexto, que puede ser por ejemplo, un diccionario.
-
-```
-def list_post(request):
-    return render(request,'feed.html', {'posts': posts})
-```
-Luego en el archivo de HTML se agrega la estructura de presentacion en HTML y con logica de progrmacion el contenido que va a cambiar.
- 
 ### Patrones de diseño
-Anteriormente con la logica programacion de los datos estaba mezclada con la presentacion de los mismos, lo que generaba que muchas partes del codigo hicieran muchas cosas y se encontraran mezcladas, es un problema muy comun en como muestras los datos, como se traen los datos y como se actualizan.
+Cuando trabajamos con Frameworks de desarrollo debemos conocer como es la estructura o arquitectura que subyace.
 
-Para solucionar esto estan los patrones de diseno, que son forma probadas de solucionar problemas comunes, para el desarrollo web existe el **MVC** *Model View COntroller*, que es una manera de separar los datos, la presentacion y la logica.
+Anteriormente con la logica programacion de los datos se mezclaban con la presentacion de los mismos, lo que generaba que muchas partes del codigo hicieran muchas cosas y se encontraran mezcladas, es un problema muy comun en como muestras los datos, como se traen los datos y como se actualizan.
 
+Para solucionar esto estan los patrones de diseño, que son formas probadas de solucionar problemas comunes, para el desarrollo web existe el **MVC** *Model View COntroller*, que es una manera de separar los datos, la presentacion y la logica.
+
+- Model: Define la estructura de los datos, el acceso y la validacion
+- View: Como se muestran los datos
 - Controller: Maneja la logica request y sabe que template mostrar
-- Modelo: Define la estructura de los datos, el acceso y la validacion
-- Vista: Como se muestran los datos
 
-Django implementa algo similar, el **MTV** *Model Template View* 
+Django implementa algo similar, el **MTV** *Model Template View* y tiene cuatro elementos clave.
 
-- Modelo: Define la estructura de los datos, el acceso y la validacion
+- Cuando la app de Django recibe una peticion web, usa el patron de URL para decidir a que vista debe para manaejarlo, esta recibe el *HTTP request* como un argumento y devuelve el *HTTP response* al servidor web para ser devuelto, El modelo define como se estructuran los datos y las consultas y la informacion es mostrada por los templates.
+
+- URL patterns: Define que view mostrar segun el web request
+- Model: Define la estructura de los datos, el acceso y la validacion
 - Template: Logica de presentacion de los datos
-- Vista: Trae los datos y los pasa al template
+- View: Trae los datos y los pasa al template
 
-## Modelos
-### La M de MTV
-Para aplicar las migraciones que aparecen al momento de correr el servidor de prueba, debemos ejecutar el comando.
+## Models
+Los modelos crean la capa de datos de la aplicacion de Django, define la estructura de la base de datos y como se guardaran.
+Tambien permiten hacer consultas e implementar el ORM (*Object Relational Mapper*) de Django.
+
+Podemos conceptualizar los modelos como una tabla en una hoja de calculo cada campo es una columna y cada registro una fila.
+
+Para crear las tablas, Django usa la tecnica ORM, una abstraccion del manejo de datos usando OOP, el ORM es un conjunto de clases de python que nos permiten interactuar con nuestra base de datos y definir su estructura.
+
+Un modelo es una clase heredada de django.db.models.Model y define los campos de la base de datos y sus atributos.
+
+### Tipos de campos mas usados
+Textual data
+- `CharField` Tipo caracter, debbe tener siempre un atributo `max_length`.
+- `TextField` Tipo caracter, sin longitud de texto limitada.
+- `EmailField` Tipo caracter, para direccion de correo.
+- `URLField` Tipo caracter, para direccion de sitios WEB.
+
+Numeric data
+- `IntegerField` Tipo numerico, para numeros enteros.
+- `DecimalField` Tipo numerico, para numeros decimales.
+
+Miscellaneous data
+- `BooleanField` Tipo logico, para valores booleanos.
+- `DateTimeField` Tipo fecha, para valores de hora y fecha.
+
+Relational data
+- `ForeignKey` Para relacionar un solo registro de un modelo con otro modelo.
+- `ManyToMany` Para relacionar varios modelos con otros
+
+### Atributos 
+Los campos pueden tener varios atributos.
+- `max_length=n` Longitud maxima del campo = n
+- `blank=True/False` Si el campo puede ser, no requerido por defecto.
+- `null=True/False` Es campo puede estar nulo
+- `choices` Limita las opciones del campo por unas predefinidas
+
+### Crear tablas
+Para crear una tabla, la debemos crear como una clase, en la documentacion de django encontramos la informacion y las opciones de como configurar cada campo.
+
+- Primero debemos importar `models` del modulo de `django.db`
 ```
-python manage.py migrate
+from django.db import models
 ```
-Esto nos permite manejar las migraciones.
-
-En el archivo settings.py es donde podremos manejar el engine de nuestras bases de datos, el modelo en Django define la estructura de los datos, el acceso y la validacion de los mismos, para esto usa diferentes opciones para conectarse a multiples bases de datos como MySQL, PostgreSQL o SQLite, esta ultima viene configurada por defecto.
-
-Para crar las tablas, Django usa la tecnica ORM (Object Relational Mapper) una abstraccion del manejo de datos usando OOP, el ORM es un conjunto de clases de python que nos permiten interactuar con nuestra base de datos y definir su estructura.
-
-Por ello para crear una tabla, la debemos crear como una clase, en la documentacion de django encontramos la informacion y las opciones de como configurar cada campo.
-
+- Creamos nuestro modelo como una clase que hereda de `model.Models`.
 ```
 class User(models.Model):
     #User Model
+    GENDER_CHOICES=[('M', 'Male'), ('F', 'Female')]
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
 
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     bio = models.TextField(blank=True)
-
     birthdate = models.DateField(blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
     cmodified = models.DateTimeField(auto_now=True)
 ```
+Para poner una relacion se debe hacer un campo de relacion
+```
+    relation = models.ManyToManyField('modelo_relacionado')
+```
+En los campos integer el valor de *blank* es tomado como 0.
 
-Una vez construido el modelo, debemos enviar dichas migraciones a traves del comando
+- Una vez construido el modelo, debemos enviar dichas migraciones a traves del comando
 ```
 python manage.py makemigrations
 ```
@@ -265,16 +295,96 @@ python manage.py migrate
 ```
 Cada que se modifique la tabla se deben seguir los pasos anteriores.
 
-### El ORM de Django
+
+### Admin
+El admin de Django nos permite crear un a interface administrativa para administar los datos de nuestra aplicación.
+
+- Para acceder a dicho modulo debemos ingredar al archivo `admin.py` dentro de nuestra aplicacion e importar el modelo.
+```
+from .models import profile
+```
+- Para hacer una interfaz de nuestro modelo devemos crear una clase y heredar el modelo de admin.
+```
+class profileAdmin(admin.ModelAdmin):
+    pass
+```
+Esta clase puede tomar varios atributos para cambiar su comportamiento
+- Debemos registrar esta clase con el admin para definir el modelo con el que esta asociado. Para esto usamos le decorador `register`
+```
+@admin.register(Profile)
+```
+## Superusuario
+Admin es un modulo de django que permite administrar los usuarios de la aplicacion, se accede a traves de un superusuario.
+
+- Para crear un super usuario
+```
+python manage.py createsuperuser
+```
+- Definimos nuestro nombre de usuario, correo y contrasena
+- Luego corremos el servidor y vamos a la ruta `/admin`
+
+## Admin UI
+El admin UI nos muestra nuestros modelos registrados, al acceder a ellos, encontramos cada uno de los registros, sus campos y valores.
+Los registros son mostrados como objetos, esto no es muy util para administrarlos por lo que debemos configurar como deseamos verlos.
+
+- Vamos al archivo `admin.py`, en la clase que estamos usando para registrarlos debemos poner el atributo `list_display` que nos permite definir los campos que deseamos ver.
+```
+class profileAdmin(admin.ModelAdmin):
+    list_display = ['first_name', 'last_name']
+```
+Cuando django muestra una instancia de modelo en el admin o la consola, por defecto solo usa el nombre del modelo, la palabra *object* y el id del campo.
+- Para cambiar este metodo debemos ir ala archivo `models.py` de la aplicacion y dentro del modelo usar el siguiente sobreescribir el metodos.
+```
+def __str__(self):
+    return self.first_name
+```
+Asi le decimos cual campo deseamos ver por defecto y como un string.
+
+### Consultas con el ORM de Django
+
 Para crear registros en nuestra base de datos django usa las clases del ORM, de este modo se hace una instanciacion de la clase.
-- Se debe abrir una consola de Django
+
+- Para iniciar abrimos una consola de Django
 ```
 python manage.py shell
 ```
--  Se importa el modelo
+-  Se importa el modelo para poder hacer las consultas
 ```
 from post.models import User
 ```
+El modelo de Django tiene un atributo llamado `Objects` con varios metodos.
+
+#### Metodo .all
+- Para obtener todas las instancias del modelo
+```
+User.objects.all
+```
+- Lo asignamos a una variable para poder trabajar con los resultados en forma de lista
+```
+users = User.objects.all()
+```
+- Para acceder a algun registro invocamos su indice
+```
+user = users[0]
+```
+- Ahora podemos acceder a cualquier campo de dicho registro.
+```
+user.name
+```
+Djanog siempre asing un campo Id a todos los registros y se puede acceder a el a traves de `.id`
+
+#### metodo get
+- Podemos consultar una sola instancia atraves del metodo `.get` y consultar algun campo.
+```
+user = User.objects.get(email ='julio@email.com)
+user.name
+```
+- El metodo get funciona para los datos unicos, pues cuando se ingresa un campo que no existe, o que pertence a varios registros genera un error.
+- Para consultar datos relacionados
+```
+user.relacion.all()
+```
+#### metodo create
 - Se pueden hacer registros de dos formas. a traves del CREATE, una  instancia la clase, `objects` es la interfaz que nos permite crear o traer datos
 ```
 cesar = User.objects.create(
@@ -304,14 +414,41 @@ julio.save()
 ```
 julio.delete()
 ```
-- Para obtener un registro
+
+### Tamplate system
+Los Templates son la manera en que dajngo genera contenido HTML dinamico. Un template contiene la parte estatica deseada de HTML y una forma de introducir contenido dinamico a traves de  logica de programacion.
+
+Los temples definen como se muestra la informacion que es traida por las vistas
+
+Debemos crear una carpeta llamada `templates` dentro de nuestr app y dentre de dicha carpeta, el documento que llevara el HTML
+
+Para usar los templates debemos importar el modulo `render` dentro de views.py
 ```
-user = User.objects.get(email ='julio@email.com)
+from django.shortcut import render
 ```
+`render` es una funcion que toma el `request`, el nombre del `template`y el contexto, que puede ser por ejemplo, un diccionario.
+
+```
+def list_post(request):
+    return render(request,'feed.html', {'posts': posts})
+```
+Luego en el archivo de HTML se agrega la estructura de presentacion en HTML y con logica de progrmacion el contenido que va a cambiar.
+ 
+
+### La M de MTV
+Para aplicar las migraciones que aparecen al momento de correr el servidor de prueba, debemos ejecutar el comando.
+```
+python manage.py migrate
+```
+Esto nos permite manejar las migraciones.
+
+En el archivo settings.py es donde podremos manejar el engine de nuestras bases de datos, el modelo en Django define la estructura de los datos, el acceso y la validacion de los mismos, para esto usa diferentes opciones para conectarse a multiples bases de datos como MySQL, PostgreSQL o SQLite, esta ultima viene configurada por defecto.
+
+
 ### Extendiendo los modelos
 Si bien los modelos pueden ser creados de manera directa, esto trae ciertas complicaciones a la hora de autenticar los registros, Django tiene modelos por defecto, que se pueden implementar para ser usados por la aplicacion.
 
-- Para implementar los modelos que django trae por defecto debemos iniciar le shell de django e importar el modelo desde django.
+- Para implementar los modelos que django trae por defecto debemos iniciar el shell de django e importar el modelo desde django.
 ```
 from django.contrib.auth.models import User 
 ```
@@ -319,14 +456,21 @@ from django.contrib.auth.models import User
 ```
 u = User.objects.create_user(username='Camilo', password='admin123')
 ```
-### Superusuario
-Admin es un modulo de django que permite administrar los usuarios de la aplicacion, se accede a traves de un superusuario.
 
-- Para crear un super usuario
-```
-python manage.py createsuperuser
-```
-### MOdelo de usuarios
-Django nos permite dos acciones para implementar el modelo de usuarios, el modelo proxy, y extender la clase de usuario ya existente.
+### Modelo de usuarios
+Django nos permite dos acciones para implementar su modelo de usuarios y extender su funcionalidad, el modelo proxy, y extender la clase de usuario ya existente.
 
-### Modelo Proxy
+#### Modelo Proxy
+El modelo proxy nos permite extender la funcionalidad de algun modelo, para ellod ebemos importar el modelo desde django
+```
+from django.contrib.auth.models import User
+``` 
+Instanciar la clase y crear los cmapos adicionales que deseemos.
+```
+class Profile(models.Model):
+    """ Profile models
+
+    proxy model extends the base data with other information.
+    """
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
+```
