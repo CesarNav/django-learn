@@ -14,4 +14,5 @@ urlpatterns = [
     path('num/', local_views.num),
 
     path('post/', post_views.list_post),
+
 ]
